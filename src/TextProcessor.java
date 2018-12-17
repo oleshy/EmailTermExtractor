@@ -73,7 +73,7 @@ public class TextProcessor {
    private Set<String> getStopWords(){
        Set<String> stopWords = new HashSet<>();
        try {
-           BufferedReader reader = new BufferedReader(new FileReader("./src/stopwords"));
+           BufferedReader reader = new BufferedReader(new FileReader("./resources/stopwords"));
            String aline = reader.readLine();
            while(aline != null){
                for (String s : aline.split(",")){

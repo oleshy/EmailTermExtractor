@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Email {
     private String Id;
@@ -8,7 +10,7 @@ public class Email {
     private String RawText;
     private transient List<String> processedSubject;
     private transient List<String> processedBody;
-    private List<Term> terms;
+    private Set<Term> terms;
 
 
     public Email(){
@@ -16,7 +18,7 @@ public class Email {
         this.ExtractedSubject = "";
         this.ExtractedBodyText = "";
         this.RawText = "";
-        this.terms = new ArrayList<Term>();
+        this.terms = new HashSet<Term>();
     }
 
     public String getBody() {   return ExtractedBodyText;  }
@@ -49,10 +51,14 @@ public class Email {
         return subjectAndBody;
 
     }
+    public Set<Term> getTerms(){return this.terms;}
 
-    public void setTerms(List<Term> terms){ this.terms = terms;  }
+    public void setTerms(Set<Term> terms){ this.terms = terms;  }
 
     public void addTerm(Term t){ this.terms.add(t); }
+
+    public void addAllTerms(List<Term> terms){ this.terms.addAll(terms); }
+
 
 
 
