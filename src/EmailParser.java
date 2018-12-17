@@ -13,25 +13,25 @@ import java.util.List;
 
 public class EmailParser {
 
-    public static Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
+    private final static Gson GSON = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
 
-    List<Email> read(String filename){
+    public List<Email> read(String filename){
 
-        List<Email> emails = new ArrayList<Email>();
+        List<Email> emails = new ArrayList<>();
 
-    try{
-           emails = gson.fromJson(new FileReader(filename), new TypeToken<List<Email>>(){}.getType());
+        try{
+           emails = GSON.fromJson(new FileReader(filename), new TypeToken<List<Email>>(){}.getType());
         }
         catch (IOException ioe){
             ioe.printStackTrace();
         }
-    return emails;
+        return emails;
     }
 
     public void writeToFile(String filename, List<Email> emails){
 
         try (Writer writer = new FileWriter(filename)) {
-            gson.toJson(emails, writer);
+            GSON.toJson(emails, writer);
 
         } catch (IOException ioe){
             ioe.printStackTrace();

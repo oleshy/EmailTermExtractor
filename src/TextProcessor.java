@@ -26,40 +26,13 @@ public class TextProcessor {
          stopWords = getStopWords();
     }
 
-    //TODO add lemmatization
-
-   /*public List<String> processCoreNLP(String text){
-
-       Properties properties = new Properties();
-       properties.put("annotators", "tokenize,ssplit,pos,lemma");
-       StanfordCoreNLP pipeline = new StanfordCoreNLP(properties);
-       Annotation annotation = pipeline.process(text);
-
-       List<CoreMap> tokens = annotation.get(CoreAnnotations.SentencesAnnotation.class);
-
-       List<String> output = new ArrayList<>();
-
-       Set<String> stopWords = getStopWords();
-
-                for (CoreMap tok : tokens){
-
-                    if (!stopWords.contains(tok.toString())){
-                        output.add(tok.toString().toLowerCase());
-                    }
-
-           }
-
-       return output;
-   }
-*/
-
     /**
      * Downcases and filters out stop words, punctuation and digits.
      * @return the processed text in a form of list of tokens
      */
    public List<String> process(String text){
 
-       List<String> words = new ArrayList<String>();
+       List<String> words = new ArrayList<>();
        Pattern digits = Pattern.compile("[0-9][0-9]*");
 
        for (String w : text.split("\\s+|--")){
@@ -76,8 +49,7 @@ public class TextProcessor {
 
    private static Set<String> getStopWords(){
        Set<String> stopWords = new HashSet<>();
-       try {
-           BufferedReader reader = new BufferedReader(new FileReader("./src/resources/stopwords"));
+       try (BufferedReader reader = new BufferedReader(new FileReader("./src/resources/stopwords"))){
            String aline = reader.readLine().trim();
            while(aline != null){
                stopWords.add(aline.trim());

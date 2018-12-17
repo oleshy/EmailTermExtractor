@@ -1,4 +1,4 @@
 public enum TypeOfContent {
 
-    BODY, SUBJECT, BOTH
+    BODY, SUBJECT, SUBJECT_AND_BODY
 }

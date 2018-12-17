@@ -19,7 +19,7 @@ public class Email {
         this.ExtractedSubject = "";
         this.ExtractedBodyText = "";
         this.RawText = "";
-        this.terms = new HashSet<Term>();
+        this.terms = new HashSet<>();
     }
 
     public String getBody() {   return ExtractedBodyText;  }
@@ -59,26 +59,5 @@ public class Email {
     public void addTerm(Term t){ this.terms.add(t); }
 
     public void addAllTerms(List<Term> terms){ this.terms.addAll(terms); }
-
-
-
-
- /*   public void fromJson(JSONObject o){
-        this.id = ((Long) o.get("Id")).intValue();
-        this.subject = (String) o.get("ExtractedSubject");
-                this.body = (String) o.get("ExtractedBodyText");
-                this.rawtext = (String) o.get("RawText");
-    }
-
-    public JSONObject toJson(){
-        JSONObject email = new JSONObject();
-        email.put("Id",id);
-        email.put("Terms", terms);
-        email.put("ExtractedSubject",subject);
-        email.put("ExtractedBodyText",body);
-        email.put("RawText",rawtext);
-        return email;
-    }
-    */
 
 }
