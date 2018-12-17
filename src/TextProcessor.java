@@ -21,6 +21,11 @@ import java.util.regex.Pattern;
  */
 public class TextProcessor {
 
+    private static Set<String> stopWords;
+    static {
+         stopWords = getStopWords();
+    }
+
     //TODO add lemmatization
 
    /*public List<String> processCoreNLP(String text){
@@ -50,40 +55,37 @@ public class TextProcessor {
 
     /**
      * Downcases and filters out stop words, punctuation and digits.
-     * @return
+     * @return the processed text in a form of list of tokens
      */
    public List<String> process(String text){
 
        List<String> words = new ArrayList<String>();
-       Set<String> stopWords = getStopWords();
        Pattern digits = Pattern.compile("[0-9][0-9]*");
-       String newtext = text.replaceAll("[^a-zA-Z0-9 ]", "").toLowerCase();
 
-       for (String w : newtext.split("\\s+")){
+       for (String w : text.split("\\s+")){
 
-           Matcher digMatcher = digits.matcher(w);
+           String newW = w.replaceFirst("^[^a-zA-Z0-9]+", "").replaceAll("[^a-zA-Z0-9]+$","").toLowerCase();
+           Matcher digMatcher = digits.matcher(newW);
 
-           if(!(stopWords.contains(w) || digMatcher.matches())){
-               words.add(w.toLowerCase());
+           if(newW.equals("") && !(stopWords.contains(newW) || digMatcher.matches())){
+               words.add(newW);
            }
        }
        return words;
    }
 
-   private Set<String> getStopWords(){
+   private static Set<String> getStopWords(){
        Set<String> stopWords = new HashSet<>();
        try {
-           BufferedReader reader = new BufferedReader(new FileReader("./resources/stopwords"));
-           String aline = reader.readLine();
+           BufferedReader reader = new BufferedReader(new FileReader("./src/resources/stopwords"));
+           String aline = reader.readLine().trim();
            while(aline != null){
-               for (String s : aline.split(",")){
-                   stopWords.add(s);
-               }
+               stopWords.add(aline);
                aline = reader.readLine();
            }
        } catch (FileNotFoundException e) {
            e.printStackTrace();
-       } catch (IOException ioe){
+       } catch (IOException ioe) {
            ioe.printStackTrace();
        }
        return stopWords;
