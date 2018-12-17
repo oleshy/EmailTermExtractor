@@ -17,7 +17,5 @@ public class MyMain {
 
         myparser.writeToFile("./src/resources/hillary_emails_with_terms.json", corpus.getEmails());
 
-
-
     }
 }

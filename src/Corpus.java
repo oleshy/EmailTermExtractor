@@ -7,7 +7,7 @@ public class Corpus {
      */
 
     private List<Email> emails;  //original emails
-    String TYPE_OF_CONTENT; //what parts of email go into the corpus of texts (subject, body, both)
+    private String TYPE_OF_CONTENT; //what parts of email go into the corpus of texts (subject, body, both)
     private List<List<String>> texts; // the corpus of email texts after preprocessing (in the same order as emails)
     private List<String> words; //lexicon (all words seen in emails)
     private double [][] matrix; //tf-idf scores
@@ -64,8 +64,8 @@ public class Corpus {
                 count++;
             }
         }
-        double result = new Double(count) / text.size();
-        return result;
+        return new Double(count) / text.size();
+
     }
 
     private double getIdf(List<List<String>> texts, String word){
@@ -110,6 +110,7 @@ public class Corpus {
      *
      * @param topN how many top word you want
      * @param textId the id of the text from which you want to extract top terms
+     *
      */
     private void findAndAddTopTermsInText(int topN, int textId){
 

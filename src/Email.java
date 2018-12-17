@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 public class Email {
+
     private String Id;
     private String ExtractedSubject;
     private String ExtractedBodyText;

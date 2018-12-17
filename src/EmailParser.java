@@ -1,6 +1,3 @@
-
-
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -15,9 +12,10 @@ import java.util.List;
 
 
 public class EmailParser {
+
     public static Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
 
-    public List<Email> read(String filename){
+    List<Email> read(String filename){
 
         List<Email> emails = new ArrayList<Email>();
 
