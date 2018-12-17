@@ -62,12 +62,12 @@ public class TextProcessor {
        List<String> words = new ArrayList<String>();
        Pattern digits = Pattern.compile("[0-9][0-9]*");
 
-       for (String w : text.split("\\s+")){
+       for (String w : text.split("\\s+|--")){
 
            String newW = w.replaceFirst("^[^a-zA-Z0-9]+", "").replaceAll("[^a-zA-Z0-9]+$","").toLowerCase();
            Matcher digMatcher = digits.matcher(newW);
 
-           if(newW.equals("") && !(stopWords.contains(newW) || digMatcher.matches())){
+           if(!newW.equals("") && !(stopWords.contains(newW) || digMatcher.matches())){
                words.add(newW);
            }
        }
@@ -80,7 +80,7 @@ public class TextProcessor {
            BufferedReader reader = new BufferedReader(new FileReader("./src/resources/stopwords"));
            String aline = reader.readLine().trim();
            while(aline != null){
-               stopWords.add(aline);
+               stopWords.add(aline.trim());
                aline = reader.readLine();
            }
        } catch (FileNotFoundException e) {

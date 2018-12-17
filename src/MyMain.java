@@ -12,8 +12,8 @@ public class MyMain {
             e.setProcessedBody(textProc.process(e.getBody()));
             e.setProcessedSubject(textProc.process(e.getSubject()));
         }
-        Corpus corpus = new Corpus(emails, "body");
-        corpus.findAndAddTopTerms(2);
+        Corpus corpus = new Corpus(emails, TypeOfContent.BOTH);
+        corpus.findAndAddTopTerms(3);
 
         myparser.writeToFile("./src/resources/hillary_emails_with_terms.json", corpus.getEmails());
 

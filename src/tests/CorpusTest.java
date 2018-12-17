@@ -63,7 +63,7 @@ public class CorpusTest {
 
     @Test
     public void findAndAddTopTerms() {
-        Corpus testCorpus = new Corpus(emails, "body");
+        Corpus testCorpus = new Corpus(emails, TypeOfContent.BODY);
         testCorpus.findAndAddTopTerms(2);
         Set<Term> result0 =  testCorpus.getTerms(0);
         Set<Term> result1 = testCorpus.getTerms(1);
