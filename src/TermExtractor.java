@@ -13,7 +13,7 @@ public class TermExtractor {
           e.setProcessedBody(textProcessor.process(e.getBody()));
           e.setProcessedSubject(textProcessor.process(e.getSubject()));
       }
-      Corpus corpus = new Corpus(emails, TypeOfContent.SUBJECT_AND_BODY);
+      Corpus corpus = new Corpus(emails, TypeOfContent.SUBJECT_AND_BODY,true);
       corpus.findAndAddTopTerms(3);
 
       emailParser.writeToFile("./src/resources/hillary_emails_with_terms.json", corpus.getEmails());

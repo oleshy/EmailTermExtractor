@@ -1,5 +1,13 @@
 
+import Jama.Matrix;
+import edu.stanford.nlp.optimization.Function;
+import edu.stanford.nlp.util.ArraySet;
+import sun.security.pkcs11.wrapper.Functions;
+
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toMap;
 
 /**
  * Represents the corpus of emails and performs different operations over the email contents.
@@ -11,10 +19,15 @@ public class Corpus {
     private List<List<String>> texts; // the corpus of email texts after preprocessing (in the same order as emails)
     private List<String> words; //lexicon (all words seen in emails)
     private double [][] tfIdfScoreMatrix; //tf-idf scores
+    private boolean removeSingleWords; //include in the analysis theose words that we've seen only 1 time in the text?
 
-    public Corpus(List<Email> emails, TypeOfContent content){
+    public Corpus(List<Email> emails, TypeOfContent content, boolean removeSingleWords){
         this.emails = emails;
+        for (Email e : emails) {
+            e.setTerms(new HashSet<>());
+        }
         this.typeOfContent = content;
+        this.removeSingleWords = removeSingleWords;
         initTexts();
         initWords();
         initTfIdfMatrix();
@@ -48,10 +61,6 @@ public class Corpus {
 
         int numOfUniqueWordsInText = new HashSet<>(texts.get(textId)).size();
 
-        if (topN > numOfUniqueWordsInText) {
-            topN = numOfUniqueWordsInText;
-        }
-
         class IndexComparator implements Comparator<Integer> {
 
             private final double[] array;
@@ -81,7 +90,9 @@ public class Corpus {
 
         int lastId = words.size()-1;
         for (int i=lastId;i>lastId-topN;i--){
-            topTerms.add(new Term(words.get(wordIds[i]), scores[wordIds[i]]));
+            if (scores[wordIds[i]] != 0) {
+                topTerms.add(new Term(words.get(wordIds[i]), scores[wordIds[i]]));
+            }
         }
 
         addTerms(topTerms,textId);
@@ -93,6 +104,23 @@ public class Corpus {
             column[i]= matrix[i][colId];
         }
         return column;
+    }
+
+
+    public void runSVD(){
+
+        Matrix s = new Matrix(tfIdfScoreMatrix).getMatrix(0,700,0,100).svd().getS();
+
+        printMatrix(s.getArray());
+    }
+
+    private void printMatrix(double[][] m){
+        for(int i=0;i<m.length;i++) {
+            for (int j = 0; j < m[0].length; j++) {
+                System.out.print(" " + m[i][j]);
+            }
+            System.out.println();
+        }
     }
 
     private void initTexts(){
@@ -155,6 +183,11 @@ public class Corpus {
 
     private void initWords(){
 
+        if(removeSingleWords){
+            initWordsUnique();
+            return;
+        }
+
         Set<String> uniqueWords = new HashSet<>();
 
         for (List<String> t : getTexts()){
@@ -163,6 +196,24 @@ public class Corpus {
             }
         }
         this.words=new ArrayList<>(uniqueWords);
+    }
+
+    private void initWordsUnique(){
+        Map<String,Integer> wordToFrequencies = new HashMap<>();
+
+
+        for(List<String> t : getTexts()){
+            for(String w : t){
+                if (!wordToFrequencies.containsKey(w)) { wordToFrequencies.put(w,1); }
+                else { wordToFrequencies.put(w, wordToFrequencies.get(w)+1); }
+            }
+        }
+
+        Map<String, Integer> wordToFrequenciesUnique = wordToFrequencies.entrySet().stream()
+                .filter(e -> e.getValue().intValue() != 1).collect(toMap(e -> e.getKey(), e -> e.getValue()));
+
+        words = new ArrayList<>(wordToFrequenciesUnique.keySet());
+
     }
 
 
