@@ -16,6 +16,7 @@ public class TermExtractor {
       Corpus corpus = new Corpus(emails, TypeOfContent.SUBJECT_AND_BODY,true);
       corpus.findAndAddTopTerms(3);
 
+
       emailParser.writeToFile("./src/resources/hillary_emails_with_terms.json", corpus.getEmails());
 
     }

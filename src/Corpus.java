@@ -1,11 +1,14 @@
 
 import Jama.Matrix;
+import Jama.SingularValueDecomposition;
 import edu.stanford.nlp.optimization.Function;
 import edu.stanford.nlp.util.ArraySet;
 import sun.security.pkcs11.wrapper.Functions;
 
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toMap;
 
@@ -40,6 +43,25 @@ public class Corpus {
     public List<List<String>> getTexts(){ return this.texts; }
 
     public List<Email> getEmails(){ return this.emails; }
+
+    /**
+     *
+     * TODO normalize tf idf matrix
+     * TODO understand what to do with s matrix after svd is done (how to cluster words into topics? how to cluster documents into topics?)
+     *
+     */
+    private void runLSA(){
+
+        SingularValueDecomposition svd = new Matrix(tfIdfScoreMatrix).svd();
+
+        printMatrix(svd.getU().getArray());
+        printMatrix(svd.getS().getArray());
+        printMatrix(svd.getV().getArray());
+
+        System.out.println(selectImportantTerms(svd.getS().getArray(), 0.4));
+
+    }
+
 
     /**
      *      Find words with N highest tf-idf scores
@@ -107,20 +129,30 @@ public class Corpus {
     }
 
 
-    public void runSVD(){
-
-        Matrix s = new Matrix(tfIdfScoreMatrix).getMatrix(0,700,0,100).svd().getS();
-
-        printMatrix(s.getArray());
-    }
 
     private void printMatrix(double[][] m){
+        DecimalFormat df = new DecimalFormat("##.00");
         for(int i=0;i<m.length;i++) {
             for (int j = 0; j < m[0].length; j++) {
-                System.out.print(" " + m[i][j]);
+                System.out.print(" " + df.format(m[i][j]));
             }
             System.out.println();
         }
+
+        System.out.println();
+    }
+
+    /**
+     * Returns a list of important terms
+     * @param s a sorted diagonal matrix s from svd
+     * @param threshold what weight is considered high enough for the topic to be "important"
+     */
+    private List<String> selectImportantTerms(double[][] s, double threshold){
+        int i=0;
+        while (s[i][i] > threshold && i < s.length){
+            i++;
+            }
+        return words.subList(0,i);
     }
 
     private void initTexts(){
@@ -210,7 +242,7 @@ public class Corpus {
         }
 
         Map<String, Integer> wordToFrequenciesUnique = wordToFrequencies.entrySet().stream()
-                .filter(e -> e.getValue().intValue() != 1).collect(toMap(e -> e.getKey(), e -> e.getValue()));
+                .filter(e -> e.getValue() != 1).collect(toMap(e -> e.getKey(), e -> e.getValue()));
 
         words = new ArrayList<>(wordToFrequenciesUnique.keySet());
 

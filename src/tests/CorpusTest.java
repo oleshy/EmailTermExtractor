@@ -22,14 +22,14 @@ public class CorpusTest {
         e0.setProcessedBody(Arrays.asList("teacher", "practice", "hard", "work", "student"));
         e0.setProcessedSubject(Arrays.asList("saying", "one"));
 
-        terms01 =  new HashSet<Term>(Arrays.asList(new Term("practice", 0.2505525936990736), new Term("hard",0.2505525936990736)));
+        terms01 =  new HashSet<>(Arrays.asList(new Term("practice", 0.2505525936990736), new Term("hard",0.2505525936990736)));
         terms02 = new HashSet<>(Arrays.asList(new Term("work", 0.16945957207744075), new Term("teacher", 0.11192315758708454), new Term("student", 0.11192315758708454)));
 
         Email e1 = new Email();
         e1.setProcessedBody(Arrays.asList("trust", "choice", "correct", "wrong", "trust", "choice", "student", "student", "student"));
         e1.setProcessedSubject(Arrays.asList("saying", "two"));
 
-        terms1 =  new HashSet<Term>(Arrays.asList(new Term("trust", 0.2783917707767484), new Term("choice",0.2783917707767484)));
+        terms1 =  new HashSet<>(Arrays.asList(new Term("trust", 0.2783917707767484), new Term("choice",0.2783917707767484)));
 
         Email e2 = new Email();
         e2.setProcessedBody(Arrays.asList("teacher", "show", "path", "walk", "master", "student"));
@@ -43,13 +43,13 @@ public class CorpusTest {
         e4.setProcessedBody(Arrays.asList("lego", "warrior", "figure", "sale", "buy", "quality"));
         e4.setProcessedSubject(Arrays.asList("limited", "opportunity", "sale"));
 
-        terms4 =  new HashSet<Term>(Arrays.asList(new Term("lego", 0.20879382808256133), new Term("warrior",0.20879382808256133)));
+        terms4 =  new HashSet<>(Arrays.asList(new Term("lego", 0.20879382808256133), new Term("warrior",0.20879382808256133)));
 
         Email e5 = new Email();
         e5.setProcessedBody(Arrays.asList("now", "buy", "deluxe", "figure", "batman", "sale"));
         e5.setProcessedSubject(Arrays.asList("buy", "now"));
 
-        terms5 = new HashSet<Term>(Arrays.asList(new Term("now", 0.14121631006453395), new Term("buy", 0.14121631006453395), new Term("figure", 0.14121631006453395)));
+        terms5 = new HashSet<>(Arrays.asList(new Term("now", 0.14121631006453395), new Term("buy", 0.14121631006453395), new Term("figure", 0.14121631006453395)));
 
 
         Email e6 = new Email();
